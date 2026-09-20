@@ -37,6 +37,10 @@ export function createLanseq(
     ...(apiKey === undefined ? {} : { apiKey }),
     ...(settings.headers === undefined ? {} : { headers: settings.headers }),
     ...(settings.fetch === undefined ? {} : { fetch: settings.fetch }),
+    // Lanseq's qualified chat endpoint supports OpenAI json_schema structured output.
+    supportsStructuredOutputs: true,
+    // Request usage in streaming responses so AI SDK can expose final token accounting.
+    includeUsage: true,
   });
 }
 
