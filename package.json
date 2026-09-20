@@ -1,0 +1,51 @@
+{
+  "name": "@lanseq/ai-sdk-provider",
+  "version": "0.1.0",
+  "description": "Lanseq provider for the Vercel AI SDK",
+  "keywords": ["ai", "ai-sdk", "lanseq", "llm", "vercel"],
+  "license": "Apache-2.0",
+  "type": "module",
+  "sideEffects": false,
+  "files": ["dist", "README.md", "LICENSE"],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build": "tsup",
+    "check": "npm run type-check && npm test && npm run build && npm pack --dry-run",
+    "test": "vitest run",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@ai-sdk/openai-compatible": "^3.0.0"
+  },
+  "peerDependencies": {
+    "ai": "^7.0.0"
+  },
+  "devDependencies": {
+    "ai": "^7.0.0",
+    "tsup": "^8.5.0",
+    "typescript": "^5.9.0",
+    "vitest": "^4.0.0"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CHYYX/ai-sdk-provider-lanseq.git"
+  },
+  "bugs": { "url": "https://github.com/CHYYX/ai-sdk-provider-lanseq/issues" },
+  "homepage": "https://github.com/CHYYX/ai-sdk-provider-lanseq#readme"
+}
