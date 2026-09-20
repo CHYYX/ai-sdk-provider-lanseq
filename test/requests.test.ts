@@ -24,7 +24,7 @@ function jsonResponse(value: unknown, status = 200): Response {
 
 describe('OpenAI-compatible request delegation', () => {
   it('generates text and preserves token usage', async () => {
-    const fetch = vi.fn(async () => jsonResponse(completion({ content: 'hello' })));
+    const fetch = vi.fn(async (_input: RequestInfo | URL, _init?: RequestInit) => jsonResponse(completion({ content: 'hello' })));
     const result = await generateText({
       model: createLanseq({ apiKey: 'secret', fetch })('qwen3.8-27b-int4'),
       prompt: 'Say hello',
@@ -43,7 +43,7 @@ describe('OpenAI-compatible request delegation', () => {
       { id: '1', object: 'chat.completion.chunk', created: 1, model: 'qwen3.8-27b-int4', choices: [{ index: 0, delta: { content: '!' }, finish_reason: 'stop' }], usage: { prompt_tokens: 2, completion_tokens: 2, total_tokens: 4 } },
     ];
     const body = events.map(event => `data: ${JSON.stringify(event)}\n\n`).join('') + 'data: [DONE]\n\n';
-    const fetch = vi.fn(async () => new Response(body, {
+    const fetch = vi.fn(async (_input: RequestInfo | URL, _init?: RequestInit) => new Response(body, {
       headers: { 'content-type': 'text/event-stream' },
     }));
 
@@ -61,7 +61,7 @@ describe('OpenAI-compatible request delegation', () => {
   });
 
   it('serializes tools as OpenAI functions', async () => {
-    const fetch = vi.fn(async () => jsonResponse(completion({ content: 'sunny' })));
+    const fetch = vi.fn(async (_input: RequestInfo | URL, _init?: RequestInit) => jsonResponse(completion({ content: 'sunny' })));
     await generateText({
       model: createLanseq({ apiKey: 'secret', fetch })('qwen3.8-27b-int4'),
       prompt: 'Weather?',
@@ -83,7 +83,7 @@ describe('OpenAI-compatible request delegation', () => {
   });
 
   it('requests schema-backed structured output', async () => {
-    const fetch = vi.fn(async () => jsonResponse(completion({ content: '{"answer":42}' })));
+    const fetch = vi.fn(async (_input: RequestInfo | URL, _init?: RequestInit) => jsonResponse(completion({ content: '{"answer":42}' })));
     const result = await generateText({
       model: createLanseq({ apiKey: 'secret', fetch })('qwen3.8-27b-int4'),
       prompt: 'The answer?',
