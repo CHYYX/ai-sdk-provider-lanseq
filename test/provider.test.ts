@@ -63,6 +63,8 @@ describe('Lanseq provider', () => {
       apiKey: 'explicit-key',
       headers,
       fetch: customFetch,
+      includeUsage: true,
+      supportsStructuredOutputs: true,
     });
   });
 
