@@ -107,18 +107,27 @@ describe('OpenAI-compatible request delegation', () => {
     await expect(generateText({
       model: createLanseq({ apiKey: 'secret', fetch: errorFetch })('qwen3.8-27b-int4'),
       prompt: 'fail',
+      maxRetries: 0,
     })).rejects.toThrow();
 
-    const abortFetch = vi.fn(async (_url: RequestInfo | URL, init?: RequestInit) => {
-      expect(init?.signal?.aborted).toBe(true);
-      throw new DOMException('Aborted', 'AbortError');
-    });
+    const abortFetch = vi.fn((_url: RequestInfo | URL, init?: RequestInit) =>
+      new Promise<Response>((_resolve, reject) => {
+        const signal = init?.signal;
+        if (signal?.aborted) {
+          reject(new DOMException('Aborted', 'AbortError'));
+          return;
+        }
+        signal?.addEventListener('abort', () => reject(new DOMException('Aborted', 'AbortError')), { once: true });
+      }),
+    );
     const controller = new AbortController();
-    controller.abort();
-    await expect(generateText({
+    const request = generateText({
       model: createLanseq({ apiKey: 'secret', fetch: abortFetch })('qwen3.8-27b-int4'),
       prompt: 'stop',
       abortSignal: controller.signal,
-    })).rejects.toThrow();
+      maxRetries: 0,
+    });
+    controller.abort();
+    await expect(request).rejects.toThrow();
   });
 });
