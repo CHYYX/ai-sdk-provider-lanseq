@@ -10,7 +10,14 @@
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
     "skipLibCheck": true,
-    "types": ["vitest/globals"]
+    "types": [
+      "vitest/globals",
+      "node"
+    ]
   },
-  "include": ["src", "test", "tsup.config.ts"]
+  "include": [
+    "src",
+    "test",
+    "tsup.config.ts"
+  ]
 }
