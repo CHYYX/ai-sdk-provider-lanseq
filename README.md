@@ -133,7 +133,15 @@ const lanseq = createLanseq({
 - The live endpoint emits reasoning data and supports Lanseq's qualified reasoning behavior. This package does not add or promise separate AI SDK-specific reasoning semantics.
 - Do not send images or attachments to `qwen3.8-27b-int4`; it is text-only.
 
-Current published pricing for `qwen3.8-27b-int4` is $0.25 per million input tokens, $0.045 per million cache-read tokens where supported, and $1.99 per million output tokens. Check Lanseq documentation for current pricing before making purchasing decisions.
+Current published pricing for `qwen3.8-27b-int4` is $0.25 per million input tokens and $1.99 per million output tokens. Cached-input billing is not currently advertised because cached-token accounting is not yet exposed end-to-end for settlement. Check Lanseq documentation for current pricing before making purchasing decisions.
+
+## Official links
+
+- Website: https://lanseq.cloud
+- Production API: https://api.lanseq.cloud/v1
+- API documentation: https://api.lanseq.cloud/docs
+- Privacy & Data Policy: https://lanseq.cloud/privacy
+- Terms of Service: https://lanseq.cloud/terms
 
 ## License
 
