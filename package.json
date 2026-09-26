@@ -1,14 +1,18 @@
 {
   "name": "@lanseq/ai-sdk-provider",
   "version": "0.1.0",
-  "description": "Lanseq provider for the Vercel AI SDK",
+  "description": "Official Lanseq provider for the Vercel AI SDK",
   "keywords": [
     "ai",
     "ai-sdk",
     "lanseq",
     "llm",
+    "inference",
+    "openai-compatible",
+    "agents",
     "vercel"
   ],
+  "author": "Lanseq",
   "license": "Apache-2.0",
   "type": "module",
   "sideEffects": false,
@@ -58,10 +62,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/CHYYX/ai-sdk-provider-lanseq.git"
+    "url": "git+https://github.com/Lanseqcloud/ai-sdk-provider-lanseq.git"
   },
   "bugs": {
-    "url": "https://github.com/CHYYX/ai-sdk-provider-lanseq/issues"
+    "url": "https://github.com/Lanseqcloud/ai-sdk-provider-lanseq/issues"
   },
-  "homepage": "https://github.com/CHYYX/ai-sdk-provider-lanseq#readme"
+  "homepage": "https://lanseq.cloud"
 }
