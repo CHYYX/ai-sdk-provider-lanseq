@@ -1,8 +1,10 @@
-# Lanseq provider for the Vercel AI SDK
+# Lanseq AI SDK Provider
 
-`@lanseq/ai-sdk-provider` connects the [Vercel AI SDK](https://ai-sdk.dev/) to [Lanseq](https://api.lanseq.cloud/docs), an inference platform that can expose multiple open-weight model deployments over time. It is a thin wrapper around the official `@ai-sdk/openai-compatible` provider.
+Official Vercel AI SDK provider for [Lanseq](https://lanseq.cloud) — inference infrastructure for open models.
 
-The initial qualified production model is `qwen3.8-27b-int4`.
+`@lanseq/ai-sdk-provider` connects the [Vercel AI SDK](https://ai-sdk.dev/) to Lanseq's OpenAI-compatible inference API. It is built on the official `@ai-sdk/openai-compatible` provider and is intended for production API and agent workloads.
+
+The current qualified production model is `qwen3.8-27b-int4`.
 
 ## Installation
 
@@ -10,7 +12,7 @@ The initial qualified production model is `qwen3.8-27b-int4`.
 npm install @lanseq/ai-sdk-provider ai
 ```
 
-Set your API key in server-side environments:
+Set your API key in a server-side environment:
 
 ```sh
 export LANSEQ_API_KEY="your-api-key"
@@ -18,9 +20,21 @@ export LANSEQ_API_KEY="your-api-key"
 
 Never expose an API key in browser code. Lanseq does not use customer data to train models.
 
-## Usage
+## Quick start
 
-### Create a provider
+```ts
+import { generateText } from 'ai';
+import { lanseq } from '@lanseq/ai-sdk-provider';
+
+const { text } = await generateText({
+  model: lanseq('qwen3.8-27b-int4'),
+  prompt: 'Explain speculative decoding in two paragraphs.',
+});
+
+console.log(text);
+```
+
+## Create a provider
 
 ```ts
 import { createLanseq } from '@lanseq/ai-sdk-provider';
@@ -40,19 +54,7 @@ import { lanseq } from '@lanseq/ai-sdk-provider';
 const model = lanseq('qwen3.8-27b-int4');
 ```
 
-### Generate text
-
-```ts
-import { generateText } from 'ai';
-import { lanseq } from '@lanseq/ai-sdk-provider';
-
-const { text, usage } = await generateText({
-  model: lanseq('qwen3.8-27b-int4'),
-  prompt: 'Explain speculative decoding in two paragraphs.',
-});
-```
-
-### Stream text
+## Streaming
 
 ```ts
 import { streamText } from 'ai';
@@ -68,7 +70,7 @@ for await (const chunk of result.textStream) {
 }
 ```
 
-### Tool calling
+## Tool calling
 
 ```ts
 import { generateText, tool } from 'ai';
@@ -90,9 +92,9 @@ const result = await generateText({
 
 Install `zod` if you use this example.
 
-### Structured output (`json_schema`)
+## Structured output
 
-Lanseq has qualified `json_schema` structured output. With the current AI SDK, request it through `Output.object`:
+Lanseq has qualified schema-backed structured output. With the current AI SDK, request it through `Output.object`:
 
 ```ts
 import { generateText, Output } from 'ai';
@@ -110,7 +112,7 @@ const { output } = await generateText({
 
 This package does not claim generic `json_object` support; use schema-backed structured output.
 
-### Custom endpoint and request options
+## Custom endpoint and request options
 
 ```ts
 const lanseq = createLanseq({
@@ -125,23 +127,29 @@ const lanseq = createLanseq({
 
 | Model | Context | Maximum output | Modalities |
 | --- | ---: | ---: | --- |
-| `qwen3.8-27b-int4` | 70,000 tokens | 8,192 tokens | Text input and output only |
+| `qwen3.8-27b-int4` | 70,000 tokens | 8,192 tokens | Text input and output |
 
 - Production API: `https://api.lanseq.cloud/v1`
-- [Public API documentation](https://api.lanseq.cloud/docs)
-- Streaming, usage accounting, tools/function calling, and `json_schema` requests are delegated to the official OpenAI-compatible AI SDK provider.
-- The live endpoint emits reasoning data and supports Lanseq's qualified reasoning behavior. This package does not add or promise separate AI SDK-specific reasoning semantics.
+- [API documentation](https://api.lanseq.cloud/docs)
+- Streaming, usage accounting, tools/function calling, and schema-backed structured output are supported through the OpenAI-compatible API.
+- The live endpoint emits reasoning data and supports Lanseq's qualified reasoning behavior.
 - Do not send images or attachments to `qwen3.8-27b-int4`; it is text-only.
 
-Current published pricing for `qwen3.8-27b-int4` is $0.25 per million input tokens and $1.99 per million output tokens. Cached-input billing is not currently advertised because cached-token accounting is not yet exposed end-to-end for settlement. Check Lanseq documentation for current pricing before making purchasing decisions.
+Current published pricing for `qwen3.8-27b-int4` is $0.25 per million input tokens and $1.99 per million output tokens. Check Lanseq documentation for current pricing before making purchasing decisions.
+
+## About Lanseq
+
+Lanseq provides inference infrastructure for open models, with a focus on reliable capacity, OpenAI-compatible access, agent workloads, and production routing.
 
 ## Official links
 
 - Website: https://lanseq.cloud
-- Production API: https://api.lanseq.cloud/v1
-- API documentation: https://api.lanseq.cloud/docs
-- Privacy & Data Policy: https://lanseq.cloud/privacy
-- Terms of Service: https://lanseq.cloud/terms
+- API: https://api.lanseq.cloud/v1
+- Documentation: https://api.lanseq.cloud/docs
+- GitHub: https://github.com/Lanseqcloud
+- X: https://x.com/lanseqcloud
+- Privacy: https://lanseq.cloud/privacy
+- Terms: https://lanseq.cloud/terms
 
 ## License
 
